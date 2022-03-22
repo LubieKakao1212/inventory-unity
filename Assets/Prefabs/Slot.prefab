@@ -423,8 +423,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSprite: {fileID: 8902424973883801559}
-  nameLabel: {fileID: 0}
-  amountLabael: {fileID: 0}
+  nameLabel: {fileID: 3925891847392453096}
+  amountLabael: {fileID: 4551671487340735141}
 --- !u!1 &8902424974647650488
 GameObject:
   m_ObjectHideFlags: 0
