@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 
-namespace Inventory 
+namespace Inventory.Items
 { 
     //Not a scriptable object
     //Improves runtime Item creation ability
@@ -13,24 +13,30 @@ namespace Inventory
 
         public string Description => description;
 
-        private Sprite sprite;
-        private string displayName;
-        private string description;
-        //TODO receive ItemStack
-        private Action itemUseAction;
+        public int MaxStackSize => maxStackSIze;
 
-        public Item(Sprite sprite, string displayName, string description = "", Action itemUseAction = null)
+        private readonly Sprite sprite;
+        private readonly string displayName;
+        private readonly string description;
+        private readonly Action<ItemStack> itemUseAction;
+        private readonly int maxStackSIze;
+
+        public Item(Sprite sprite, string displayName, int maxStackSIze = 16, string description = "", Action itemUseAction = null)
         {
             this.sprite = sprite;
             this.displayName = displayName;
             this.description = description;
             this.itemUseAction = itemUseAction;
+            this.maxStackSIze = maxStackSIze;
         }
 
-        //TODO receive ItemStack
-        public void UseItem()
+        /// <summary>
+        /// Called from <see cref="ItemStack.Use"/>
+        /// </summary>
+        /// <param name="currentStack"></param>
+        internal virtual void UseItem(ItemStack currentStack)
         {
-            itemUseAction?.Invoke();
+            itemUseAction?.Invoke(currentStack);
         }
     }
 }
