@@ -21,7 +21,7 @@ namespace Inventory.Items
         private readonly Action<ItemStack> itemUseAction;
         private readonly int maxStackSIze;
 
-        public Item(Sprite sprite, string displayName, int maxStackSIze = 16, string description = "", Action itemUseAction = null)
+        public Item(Sprite sprite, string displayName, int maxStackSIze = 16, string description = "", Action<ItemStack> itemUseAction = null)
         {
             this.sprite = sprite;
             this.displayName = displayName;
