@@ -22,7 +22,7 @@ namespace Inventory.Inv
             {
                 ValidateSlotIndex(slot);
                 slots[slot] = value;
-                OnContentChanged?.Invoke`(slot);
+                OnContentChanged?.Invoke(slot);
             }
         }
 
