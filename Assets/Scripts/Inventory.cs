@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace Inventory.Inv
@@ -28,6 +29,11 @@ namespace Inventory.Inv
 
         public event Action<int> OnContentChanged;
 
+        public Inventory(int size)
+        {
+            slots = Enumerable.Repeat(ItemStack.Empty, size).ToArray();
+        }
+
         public ItemStack Insert(ItemStack stack, bool simulate = false)
         {
             throw new NotImplementedException();
@@ -36,36 +42,42 @@ namespace Inventory.Inv
         public ItemStack Insert(ItemStack stack, int slot, bool simulate = false)
         {
             ValidateSlotIndex(slot);
+
+            ItemStack inserted = null;
+            ItemStack notInserted = null;
+            
             if (stack.CanStackWith(slots[slot]))
             {
-                ItemStack existing = slots[slot].Copy();
-                int notInserted = existing.Grow(stack.Amount);
-
-                if (!simulate)
-                {
-                    slots[slot] = existing;
-                }
-
-                return existing.Copy(notInserted);
+                inserted = slots[slot].Copy();
+                int notInsertedAmount = inserted.Grow(stack.Amount);
+                
+                notInserted = inserted.Copy(notInsertedAmount);
             }
             if (slots[slot].IsEmpty)
             {
-                ItemStack result = stack.Copy();
-                int notInserted = result.Amount - result.Item.MaxStackSize;
+                inserted = stack.Copy();
+                int notInsertedAmount = inserted.Amount - inserted.Item.MaxStackSize;
 
-                if(notInserted > 0)
+                if(notInsertedAmount > 0)
                 {
-                    result.Amount = result.Item.MaxStackSize;
+                    inserted.Amount = inserted.Item.MaxStackSize;
                 }
 
-                if (!simulate)
-                {
-                    slots[slot] = result;
-                }
-
-                return result.Copy(notInserted);
+                notInserted = inserted.Copy(notInsertedAmount);
             }
-            return stack;
+
+            if (inserted == null)
+            {
+                return stack;
+            }
+
+            if (!simulate)
+            {
+                slots[slot] = inserted;
+                OnContentChanged?.Invoke(slot);
+            }
+
+            return notInserted;
         }
 
         public ItemStack Extract(ItemStack stack, int amount = -1, bool simulate = false)
@@ -111,6 +123,5 @@ namespace Inventory.Inv
                 throw new IndexOutOfRangeException($"Slot index is outside of bounds: {i}, Size: {Size}");
             }
         }
-
     }
 }
