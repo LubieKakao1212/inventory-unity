@@ -7,6 +7,9 @@ namespace Inventory.Items
     //Improves runtime Item creation ability
     public class Item
     {
+        public static Item Empty => empty;
+        private static readonly Item empty = new Item(null, null, 0, null, null);
+
         public Sprite Sprite => sprite;
 
         public string DisplayName => displayName;
