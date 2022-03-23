@@ -6,8 +6,12 @@ namespace Inventory.Items
 {
     public class ItemStack
     {
+        public static ItemStack Empty => empty.Copy();
+        private static readonly ItemStack empty = new ItemStack(Item.Empty, 0);
+
         public Item Item => item;
-        public int Amount => amount;
+        public int Amount { get => amount; set => amount = value; }
+        public bool IsEmpty => amount <= 0 || item == null || item == Item.Empty;
 
         private Item item;
         private int amount;
@@ -101,6 +105,15 @@ namespace Inventory.Items
                 result = result - item.MaxStackSize;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Does stacks contain the same item
+        /// </summary>
+        /// <returns></returns>
+        public bool CanStackWith(ItemStack other)
+        {
+            return ReferenceEquals(item, other.item);
         }
 
         public ItemStack Copy()
