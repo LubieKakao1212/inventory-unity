@@ -22,6 +22,7 @@ namespace Inventory.Inv
             {
                 ValidateSlotIndex(slot);
                 slots[slot] = value;
+                OnContentChanged?.Invoke(slot);
             }
         }
 
@@ -36,7 +37,13 @@ namespace Inventory.Inv
 
         public ItemStack Insert(ItemStack stack, bool simulate = false)
         {
-            throw new NotImplementedException();
+            //No need to copy stack it is copied inside Insert(ItemStack, int, bool)
+            for (int i = 0; i < Size; i++) 
+            {
+                stack = Insert(stack, i, simulate);
+            }
+
+            return stack;
         }
 
         public ItemStack Insert(ItemStack stack, int slot, bool simulate = false)
@@ -62,6 +69,10 @@ namespace Inventory.Inv
                 {
                     inserted.Amount = inserted.Item.MaxStackSize;
                 }
+                else
+                {
+                    notInsertedAmount = 0;
+                }
 
                 notInserted = inserted.Copy(notInsertedAmount);
             }
@@ -82,7 +93,32 @@ namespace Inventory.Inv
 
         public ItemStack Extract(ItemStack stack, int amount = -1, bool simulate = false)
         {
-            throw new NotImplementedException();
+            ItemStack result = stack.Copy(0);
+
+            if(amount <= 0)
+            {
+                amount = result.Item.MaxStackSize;
+            }
+
+            for (int i = 0; i < Size; i++) 
+            {
+                int amt = Extract(stack, amount, simulate).Amount;
+
+                result.Grow(amt);
+                amount -= amt;
+
+                if(amount == 0) 
+                {
+                    break;
+                }
+
+                if (amount < 0)
+                {
+                    throw new Exception("This should never happen");
+                }
+            }
+
+            return result;
         }
 
         public ItemStack Extract(ItemStack stack, int slot, int amount = -1, bool simulate = false)
@@ -93,7 +129,7 @@ namespace Inventory.Inv
                 return Extract(slot, amount, simulate);
             }
 
-            return ItemStack.Empty.Copy();
+            return ItemStack.Empty;
         }
 
         public ItemStack Extract(int slot, int amount = -1, bool simulate = false)
