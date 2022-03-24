@@ -19,9 +19,20 @@ namespace Inventory.UI
 
         public void SetItem(ItemStack item)
         {
-            this.itemSprite.sprite = item.Item.Sprite;
-            this.nameLabel.text = item.Item.DisplayName;
-            this.amountLabael.text = item.Amount.ToString();
+            if(item == null || item.IsEmpty)
+            {
+                this.itemSprite.sprite = null;
+                this.itemSprite.color = Color.clear;
+                this.nameLabel.text = "";
+                this.amountLabael.text = "";
+            }
+            else
+            {
+                this.itemSprite.sprite = item.Item.Sprite;
+                this.itemSprite.color = Color.white;
+                this.nameLabel.text = item.Item.DisplayName;
+                this.amountLabael.text = item.Amount.ToString();
+            }
         }
     }
 }
