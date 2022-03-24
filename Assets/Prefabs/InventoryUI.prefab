@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19b03330b323d947b237f43cd8ce828, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotPrefab: {fileID: 8902424974202559670, guid: 9f5256f9edbf1e540868a79d80727bbd,
+  slotPrefab: {fileID: 7370015286090557310, guid: 9f5256f9edbf1e540868a79d80727bbd,
     type: 3}
 --- !u!114 &367810355512791285
 MonoBehaviour:

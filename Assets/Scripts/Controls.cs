@@ -7,6 +7,10 @@ public class Controls : MonoBehaviour
 {
     public static event System.Action<Vector2> mousePosition;
 
+    public static InputAction CursorPos => cursorPos;
+
+    private static InputAction cursorPos;
+
     [SerializeField]
     private InputMap inputMap;
 
@@ -17,18 +21,15 @@ public class Controls : MonoBehaviour
             inputMap = new InputMap();
         }
 
+        cursorPos = inputMap.UI.Cursor;
+
         //I could have used a Lambda here
-        inputMap.UI.Cursor.performed += InvokeMousePositionChange;
+        inputMap.UI.Cursor.performed += (args) => mousePosition?.Invoke(args.ReadValue<Vector2>());
     }
 
     private void OnEnable()
     {
         inputMap.Enable();
-    }
-
-    private void InvokeMousePositionChange(InputAction.CallbackContext args)
-    { 
-        mousePosition?.Invoke(args.ReadValue<Vector2>()); 
     }
 
     private void OnDisable()

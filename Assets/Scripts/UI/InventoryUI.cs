@@ -53,7 +53,7 @@ namespace Inventory.UI
             for (int i = 0; i < inventory.Size; i++) 
             {
                 slots.Add(Instantiate(slotPrefab, transform));
-                slots[i].Parent = this;
+                slots[i].Setup(this, i);
                 slots[i].SetItem(inventory[i]);
             }
         }
