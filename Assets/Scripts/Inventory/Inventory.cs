@@ -142,6 +142,10 @@ namespace Inventory.Inv
                 result.Shrink(amount);
                 extracted = extracted - result.Amount;
             }
+            else
+            {
+                result.Shrink(extracted);
+            }
 
             if (!simulate)
             {
