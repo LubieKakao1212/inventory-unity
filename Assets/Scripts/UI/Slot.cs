@@ -10,6 +10,14 @@ namespace Inventory.UI
 
     public class Slot : MonoBehaviour
     {
+        public InventoryUI Parent
+        {
+            get => parent;
+            internal set => parent = value;
+        }
+
+        private InventoryUI parent;
+
         [SerializeField]
         private Image itemSprite;
         [SerializeField]
