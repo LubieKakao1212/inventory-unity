@@ -115,12 +115,20 @@ namespace Inventory.Items
         {
             return ReferenceEquals(item, other.item);
         }
-
+        
+        /// <summary>
+        /// Creates a copy of this ItemStack
+        /// </summary>
         public ItemStack Copy()
         {
             return new ItemStack(item, amount);
         }
 
+        /// <summary>
+        /// Creates a copy of this <see cref="ItemStack"/> with specified <paramref name="amount"/> <br/>
+        /// If <paramref name="amount"/> is negative returns same as <see cref="Copy"/>
+        /// </summary>
+        /// <param name="amount"></param>
         public ItemStack Copy(int amount)
         {
             return new ItemStack(item, amount);
