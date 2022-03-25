@@ -13,23 +13,16 @@ namespace Inventory.Definition
         public static GlobalInventories Instance => instance;
         private static GlobalInventories instance;
 
-        public IInventory PickedUp => pickedUp;
+        public IInventory PickedUp => pickedUpInventory.Inventory;
 
-        private IInventory pickedUp;
+        [SerializeField]
+        private InventoryHolder pickedUpInventory;
 
         private void Awake()
         {
             Assert.IsNull(instance, "Multiple GlobalInventories instances");
 
             instance = this;
-
-            Setup();
         }
-
-        private void Setup()
-        {
-            pickedUp = new Inventory(1);
-        }
-
-}
+    }
 }
