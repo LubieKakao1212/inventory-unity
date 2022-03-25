@@ -58,7 +58,7 @@ namespace Inventory.Inv
 
             leftover = from.Extract(fromSlot, amountTransfered);
 
-            if (!leftover.IsEmpty)
+            if (leftover.Amount != amountTransfered)
             {
                 amountTransfered = 0;
                 from[fromSlot] = existingFrom;

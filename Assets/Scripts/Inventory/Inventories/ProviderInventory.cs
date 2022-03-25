@@ -58,7 +58,7 @@ namespace Inventory.Inv
             ValidateSlotIndex(slot);
             if (amount == 0)
             {
-                amount = -1;
+                return ItemStack.Empty;
             }
             return templates[slot].Copy(amount);
         }
