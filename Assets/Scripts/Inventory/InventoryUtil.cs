@@ -34,5 +34,34 @@ namespace Inventory.Inv
 
             return true;
         }
+
+        /// <summary>
+        /// Attempts to transfer given amount of items from one slot two another
+        /// </summary>
+        /// <param name="amountTransfered">How many items were actualy transfered</param>
+        /// <returns>Whether transfer was succesful</returns>
+        public static bool TryTransferAmount(IInventory from, int fromSlot, IInventory to, int toSlot, int amount, out int amountTransfered)
+        {
+            ItemStack existingFrom = from[fromSlot];
+            ItemStack existingTo = to[toSlot];
+
+            ItemStack extracted = from.Extract(fromSlot, amount, true);
+
+            ItemStack leftover = to.Insert(extracted, toSlot);
+
+            amountTransfered = amount - leftover.Amount;
+
+            leftover = from.Extract(fromSlot, amountTransfered);
+
+            if (!leftover.IsEmpty)
+            {
+                amountTransfered = 0;
+                from[fromSlot] = existingFrom;
+                to[toSlot] = existingTo;
+                return false;
+            }
+
+            return true;
+        }
     }
 }
