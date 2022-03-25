@@ -131,6 +131,10 @@ namespace Inventory.Items
         /// <param name="amount"></param>
         public ItemStack Copy(int amount)
         {
+            if(amount < 0)
+            {
+                amount = Amount;
+            }
             return new ItemStack(item, amount);
         }
     }
