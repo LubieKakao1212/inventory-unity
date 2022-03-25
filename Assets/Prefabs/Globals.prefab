@@ -54,6 +54,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3994140954888258085}
   - component: {fileID: 3994140954888258084}
+  - component: {fileID: 1576551741}
   m_Layer: 0
   m_Name: Globals
   m_TagString: Untagged
@@ -89,3 +90,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pickedUpInventory: {fileID: 470022304396944016}
+--- !u!114 &1576551741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3994140954888258087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0abec42a14f21e4c92a88a7ae0e6142, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
