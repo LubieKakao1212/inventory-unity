@@ -138,6 +138,10 @@ namespace Inventory.Inv
         public ItemStack Extract(int slot, int amount = -1, bool simulate = false)
         {
             ValidateSlotIndex(slot);
+            if(amount == 0)
+            {
+                return ItemStack.Empty;
+            }
             ItemStack result = slots[slot].Copy();
             int extracted = result.Amount;
             if (amount > 0)
