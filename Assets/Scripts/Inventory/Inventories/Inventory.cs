@@ -7,6 +7,9 @@ namespace Inventory.Inv
     using Api;
     using Items;
 
+    /// <summary>
+    /// Basic <see cref="IInventory"/> implementation
+    /// </summary>
     public class Inventory : IInventory
     {
         public int Size => slots.Length;
