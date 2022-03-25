@@ -45,6 +45,11 @@ namespace Inventory.Inv
             ItemStack existingFrom = from[fromSlot];
             ItemStack existingTo = to[toSlot];
 
+            if (amount <= 0)
+            {
+                amount = existingFrom.Amount;
+            }
+
             ItemStack extracted = from.Extract(fromSlot, amount, true);
 
             ItemStack leftover = to.Insert(extracted, toSlot);
