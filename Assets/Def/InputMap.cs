@@ -40,6 +40,33 @@ public class @InputMap : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Clicks"",
+            ""id"": ""28066a7e-c195-4e67-a765-cf245a3776f8"",
+            ""actions"": [
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""4225f2f0-799f-4518-92f7-b104414fa0ff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""1d798e00-9dd1-454f-a7cc-62ead645e8f3"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -47,6 +74,9 @@ public class @InputMap : IInputActionCollection, IDisposable
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Cursor = m_UI.FindAction("Cursor", throwIfNotFound: true);
+        // Clicks
+        m_Clicks = asset.FindActionMap("Clicks", throwIfNotFound: true);
+        m_Clicks_Right = m_Clicks.FindAction("Right", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -125,8 +155,45 @@ public class @InputMap : IInputActionCollection, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // Clicks
+    private readonly InputActionMap m_Clicks;
+    private IClicksActions m_ClicksActionsCallbackInterface;
+    private readonly InputAction m_Clicks_Right;
+    public struct ClicksActions
+    {
+        private @InputMap m_Wrapper;
+        public ClicksActions(@InputMap wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Right => m_Wrapper.m_Clicks_Right;
+        public InputActionMap Get() { return m_Wrapper.m_Clicks; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(ClicksActions set) { return set.Get(); }
+        public void SetCallbacks(IClicksActions instance)
+        {
+            if (m_Wrapper.m_ClicksActionsCallbackInterface != null)
+            {
+                @Right.started -= m_Wrapper.m_ClicksActionsCallbackInterface.OnRight;
+                @Right.performed -= m_Wrapper.m_ClicksActionsCallbackInterface.OnRight;
+                @Right.canceled -= m_Wrapper.m_ClicksActionsCallbackInterface.OnRight;
+            }
+            m_Wrapper.m_ClicksActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
+            }
+        }
+    }
+    public ClicksActions @Clicks => new ClicksActions(this);
     public interface IUIActions
     {
         void OnCursor(InputAction.CallbackContext context);
+    }
+    public interface IClicksActions
+    {
+        void OnRight(InputAction.CallbackContext context);
     }
 }
