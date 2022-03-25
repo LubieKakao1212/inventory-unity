@@ -11,7 +11,7 @@ namespace Inventory.UI
 
         private void UpdatePosition(Vector2 position)
         {
-            rectTransform.anchoredPosition = position;
+            rectTransform.position = position;
         }
 
         private void Start()
