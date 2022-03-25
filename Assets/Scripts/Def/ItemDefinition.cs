@@ -6,6 +6,9 @@ namespace Inventory.Definition
 {
     using Items;
 
+    /// <summary>
+    /// Definition of an Item and its instance in a form of a scriptable object
+    /// </summary>
     [CreateAssetMenu(menuName = "Item")]
     public class ItemDefinition : ScriptableObject
     {

@@ -13,7 +13,11 @@ namespace Inventory.Definition
         public static GlobalInventories Instance => instance;
         private static GlobalInventories instance;
 
+        /// <summary>
+        /// "Cursor" inventory
+        /// </summary>
         public IInventory PickedUp => pickedUpInventory.Inventory;
+        
 
         [SerializeField]
         private InventoryHolder pickedUpInventory;

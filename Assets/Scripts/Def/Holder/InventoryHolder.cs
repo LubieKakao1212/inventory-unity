@@ -7,6 +7,9 @@ namespace Inventory.Definition
     using Api;
     using Inv;
 
+    /// <summary>
+    /// MonoBehaviour bridge for inventory
+    /// </summary>
     public class InventoryHolder : MonoBehaviour
     {
         public IInventory Inventory => inventory;
