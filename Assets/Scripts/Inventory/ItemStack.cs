@@ -125,6 +125,16 @@ namespace Inventory.Items
         }
 
         /// <summary>
+        /// NonAlloc version of <see cref="Copy"/>
+        /// </summary>
+        public ItemStack CopyTo(ItemStack target) 
+        {
+            target.item = item;
+            target.amount = amount;
+            return target;
+        }
+
+        /// <summary>
         /// Creates a copy of this <see cref="ItemStack"/> with specified <paramref name="amount"/> <br/>
         /// If <paramref name="amount"/> is negative returns same as <see cref="Copy"/>
         /// </summary>
