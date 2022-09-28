@@ -25,6 +25,10 @@ namespace Inventory.Definition
             }
         }
 
+        [Tooltip("Must be uniqueue across all serializable items")]
+        [SerializeField]
+        private string serializationId = "";
+
         [SerializeField]
         private Sprite sprite = null;
 
@@ -42,7 +46,7 @@ namespace Inventory.Definition
         /// <returns></returns>
         public virtual Item CreateItem()
         {
-            return new Item(sprite, displayName, maxStackSize);
+            return new Item(serializationId, sprite, displayName, maxStackSize);
         }
     }
 }

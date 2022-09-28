@@ -1,17 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
+using Core.Serialization;
+using Newtonsoft.Json.Linq;
 
 namespace Inventory.Items
 {
-    public class ItemStack
+    public class ItemStack : ISerializable
     {
         public static ItemStack Empty => empty.Copy();
-        private static readonly ItemStack empty = new ItemStack(Item.Empty, 0);
+        private static readonly ItemStack empty = new(Item.Empty, 0);
 
         public Item Item => item;
         public int Amount { get => amount; set => amount = value; }
-        public bool IsEmpty => amount <= 0 || item == null || item == Item.Empty;
+        public bool IsEmpty => amount <= 0 || item == Item.Empty;
 
         private Item item;
         private int amount;
@@ -21,7 +23,7 @@ namespace Inventory.Items
         //Lack of amount check is intended
         public ItemStack(Item item, int amount)
         {
-            this.item = item;
+            this.item = item ?? Item.Empty;
             this.amount = amount;
         }
 
@@ -146,6 +148,33 @@ namespace Inventory.Items
                 amount = Amount;
             }
             return new ItemStack(item, amount);
+        }
+
+        public JToken Serialize()
+        {
+            var tokenOut = new JArray();
+
+            tokenOut.Add(Item.Id);
+            tokenOut.Add(Amount);
+
+            //TODO Custom data
+            //tokenOut.Add(data);
+            tokenOut.Add(new JObject());
+
+            if (SerializetionSettings.UseChecksums)
+                tokenOut.Add(tokenOut.ToString().GetHashCode());
+
+            return tokenOut;
+        }
+
+        public void Deserialize(JToken json)
+        {
+            if (!(json is JArray jarr))
+            {
+                throw new ApplicationException("Item stacks can only be deserialized from an array");
+            }
+
+            
         }
     }
 }
