@@ -9,7 +9,7 @@ Code Instructions:
 
 Roadmap:
     Base features [done]
-    Serialization
+    Serialization [in progress]
     Gamepad support
     Inventory content generators (loot spawners)
     Crafting
