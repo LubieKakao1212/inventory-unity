@@ -6,3 +6,10 @@ Runtime Instructions:
 
 Code Instructions:
     There is documentation it is not the best, but should be enought
+
+Roadmap:
+    Base features [done]
+    Serialization
+    Gamepad support
+    Inventory content generators (loot spawners)
+    Crafting
