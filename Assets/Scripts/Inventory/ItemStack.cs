@@ -161,9 +161,6 @@ namespace Inventory.Items
             //tokenOut.Add(data);
             tokenOut.Add(new JObject());
 
-            if (SerializetionSettings.UseChecksums)
-                tokenOut.Add(tokenOut.ToString().GetHashCode());
-
             return tokenOut;
         }
 
