@@ -4,6 +4,9 @@ namespace Inventory.Api
 {
     using Items;
 
+    /// <summary>
+    /// Not serializable by default, if you need serialization use specific inventory that supports it
+    /// </summary>
     public interface IInventory
     {
         event Action<int> OnContentChanged;

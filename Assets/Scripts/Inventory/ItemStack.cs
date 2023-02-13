@@ -161,17 +161,47 @@ namespace Inventory.Items
             //tokenOut.Add(data);
             tokenOut.Add(new JObject());
 
+            tokenOut.AppendChecksum();
+
             return tokenOut;
         }
 
-        public void Deserialize(JToken json)
+        void ISerializable.Deserialize(JToken json)
         {
             if (!(json is JArray jarr))
             {
                 throw new ApplicationException("Item stacks can only be deserialized from an array");
             }
+            jarr.ValidateChecksum();
 
-            
+            if (jarr.Count < 3)
+            {
+                throw new ApplicationException("Cannot deserialize ItemStack, Invalid Json data");
+            }
+
+            var id = (string)jarr[0];
+
+            Item item = Item.Empty;
+
+            if (id != null)
+            {
+                item = ItemDB.Instance[id];
+            }
+
+            var amount = (int?)jarr[1];
+
+            this.item = amount.HasValue ? item : Item.Empty;
+            this.amount = amount.GetValueOrDefault(0);
+
+            //TODO
+            //data = jarr[2]
+        }
+
+        public static ItemStack DeserializeNew(JToken json)
+        {
+            var stack = (ISerializable)Empty;
+            stack.Deserialize(json);
+            return (ItemStack)stack;
         }
     }
 }

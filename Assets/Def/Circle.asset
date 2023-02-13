@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 910d1cc9f7a055d46b55f4114bd5b5e6, type: 3}
   m_Name: Circle
   m_EditorClassIdentifier: 
+  serializationId: circle
   sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
   displayName: Circle
   maxStackSize: 16

@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using Core.Serialization;
+using Newtonsoft.Json.Linq;
+
+using UnityEngine;
 
 namespace Inventory.Inv
 {
@@ -10,7 +14,7 @@ namespace Inventory.Inv
     /// <summary>
     /// Basic <see cref="IInventory"/> implementation
     /// </summary>
-    public class Inventory : IInventory
+    public class Inventory : IInventory, ISerializable
     {
         public int Size => slots.Length;
 
@@ -52,6 +56,11 @@ namespace Inventory.Inv
         public ItemStack Insert(ItemStack stack, int slot, bool simulate = false)
         {
             ValidateSlotIndex(slot);
+
+            if (stack.IsEmpty)
+            {
+                return ItemStack.Empty;
+            }
 
             ItemStack inserted = null;
             ItemStack notInserted = null;
@@ -156,7 +165,14 @@ namespace Inventory.Inv
 
             if (!simulate)
             {
-                slots[slot] = result;
+                if (result.IsEmpty)
+                {
+                    slots[slot] = ItemStack.Empty;
+                }
+                else
+                {
+                    slots[slot] = result;
+                }
                 OnContentChanged?.Invoke(slot);
             }
 
@@ -168,6 +184,64 @@ namespace Inventory.Inv
             if (i < 0 || i >= Size)
             {
                 throw new IndexOutOfRangeException($"Slot index is outside of bounds: {i}, Size: {Size}");
+            }
+        }
+
+        public JToken Serialize()
+        {
+            JArray serialized = new JArray();
+            foreach (var stack in slots)
+            {
+                serialized.Add(stack.Serialize());
+            }
+
+            serialized.AppendChecksum();
+
+            return serialized;
+        }
+
+        public void Deserialize(JToken json)
+        {
+            if (json is JArray jarr)
+            {
+                jarr.ValidateChecksum();
+
+                if (jarr.Count != Size)
+                {
+                    Debug.LogWarning("Target inventory size, and serialized data size do not match. Data loss possible.");
+                }
+
+                Clear(false);
+
+                //Add items
+                for (int i = 0; i < Size; i++)
+                {
+                    if (!Insert(ItemStack.DeserializeNew(jarr[i]), i, false).IsEmpty)
+                    {
+                        Debug.LogWarning("Items lost due to insertion failure");
+                    }
+                }
+
+                //Notify
+                for (int i = 0; i < Size; i++)
+                {
+                    OnContentChanged?.Invoke(i);
+                }
+            }
+        }
+
+        private void Clear(bool notify = false)
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                slots[i] = ItemStack.Empty;
+            }
+            if (notify)
+            {
+                for (int i = 0; i < Size; i++)
+                {
+                    OnContentChanged?.Invoke(i);
+                }
             }
         }
     }
